@@ -1,4 +1,7 @@
 (defun c:demanda ()
+  (save_osnap)
+  (setvar "osmode" 0)
+  
   (setq start_point (getpoint "\nClique no local desejado: "))
   (command "._rectang" start_point "d" 0.00004 0.000066 start_point)
   
@@ -12,4 +15,14 @@
   (command "._line" first_line_break_start first_line_break_end "")
   (command "._line" second_line_break_start second_line_break_end "")
   (command "._line" third_line_break_start third_line_break_end "")
+  
+  (restore_osnap)
+  )
+
+(defun save_osnap ()
+  (setq osnap_mode (getvar "osmode"))
+  )
+
+(defun restore_osnap ()
+  (setvar "osmode" osnap_mode)
   )
