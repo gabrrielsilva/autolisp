@@ -1,8 +1,15 @@
 (defun c:demanda ()
   (setq start_point (getpoint "\nClique no local desejado: "))
-  (setq top_right_point (polar start_point 0 0.00004))
-  (setq bottom_right_point (polar top_right_point (/ (* 3 pi) 2) 0.000066))
-  (setq bottom_left_point (polar bottom_right_point pi 0.00004))
+  (command "._rectang" start_point "d" 0.00004 0.000066 start_point)
   
-  (command "._pline" start_point top_right_point bottom_right_point bottom_left_point start_point "")
+  (setq first_line_break_start (polar start_point (/ pi 2) (/ 0.000066 4))) ; 270°
+  (setq first_line_break_end (polar first_line_break_start 0 0.00004))
+  (setq second_line_break_start (polar first_line_break_start (/ pi 2) (/ 0.000066 4)))
+  (setq second_line_break_end (polar second_line_break_start 0 0.00004))
+  (setq third_line_break_start (polar second_line_break_start (/ pi 2) (/ 0.000066 4)))
+  (setq third_line_break_end (polar third_line_break_start 0 0.00004))
+  
+  (command "._line" first_line_break_start first_line_break_end "")
+  (command "._line" second_line_break_start second_line_break_end "")
+  (command "._line" third_line_break_start third_line_break_end "")
   )
