@@ -23,7 +23,7 @@
                     (70 . 1)
                     (-4 . "AND>")
                     (-4 . "OR>")
-                    )
+                   )
             )
       )
     (progn 
@@ -68,14 +68,6 @@
   (save_osnap)
   (setvar "osmode" 0)
   
-  (defun remove-decimal (num)
-    (setq num-as-string (rtos num))
-    (if (vl-string-search "." num-as-string)
-      (substr num-as-string 1 (1- (strlen num-as-string)))
-      num-as-string
-    )
-  )
-  
   (setq insert_point (getpoint "\nClique no local desejado: "))
   (command "._rectang" insert_point "d" 0.00004 0.000066 insert_point)
   
@@ -94,7 +86,7 @@
   (setq percentage_point (polar second_line_break_start 0 (/ 0.00004 2)))
   (setq result_point (polar first_line_break_start 0 (/ 0.00004 2)))
   (command "._text" "j" "tc" hh_point 0 hh "")
-  (setq integer_percentage (remove-decimal (* (/ 16 hh) 100)))
+  (setq integer_percentage (rtos (* (/ 16 hh) 100) 2 0))
   (command "._text" "j" "tc" percentage_point 0 (strcat integer_percentage "%") "")
   (command "._text" "j" "tc" result_point 0 16 "")
   
