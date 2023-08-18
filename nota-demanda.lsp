@@ -63,12 +63,18 @@
   (princ)
 )
 
-;; Gabriel S. Nascimento - Brazil
+;; Gabriel S. Nascimento, 15.08.23
 (defun draw (hh)
   (save_osnap)
   (setvar "osmode" 0)
   
   (setq insert_point (getpoint "\nClique no local desejado: "))
+  
+  (command "._style" "ROMANS" "ROMANS" 0.000008 "1" "0" "N" "N" "N")
+  
+  (command "layer" "new" "DEMANDA ASS" "color" "1" "DEMANDA ASS" "") 
+  (command "layer" "set" "DEMANDA ASS" "") 
+  
   (command "._rectang" insert_point "d" 0.00004 0.000066 insert_point)
   
   (setq first_line_break_start (polar insert_point (/ pi 2) (/ 0.000066 4)))
@@ -82,13 +88,17 @@
   (command "._line" second_line_break_start second_line_break_end "")
   (command "._line" third_line_break_start third_line_break_end "")
     
-  (setq hh_point (polar third_line_break_start 0 (/ 0.00004 2)))
-  (setq percentage_point (polar second_line_break_start 0 (/ 0.00004 2)))
-  (setq result_point (polar first_line_break_start 0 (/ 0.00004 2)))
-  (command "._text" "j" "tc" hh_point 0 hh "")
+  (setq center_point (polar insert_point 0 (/ 0.00004 2)))
+  
+  (setq hh_point (polar center_point (/ pi 2) (* (/ 0.000066 8) 5)))
+  (setq percentage_point (polar center_point (/ pi 2) (* (/ 0.000066 8) 3)))
+  (setq result_point (polar center_point (/ pi 2) (* (/ 0.000066 8) 1)))
+  
   (setq integer_percentage (rtos (* (/ 16 hh) 100) 2 0))
-  (command "._text" "j" "tc" percentage_point 0 (strcat integer_percentage "%") "")
-  (command "._text" "j" "tc" result_point 0 16 "")
+  
+  (command "._text" "j" "mc" hh_point 0 hh "")
+  (command "._text" "j" "mc" percentage_point 0 (strcat integer_percentage "%") "")
+  (command "._text" "j" "mc" result_point 0 16 "")
   
   (restore_osnap)
 )
