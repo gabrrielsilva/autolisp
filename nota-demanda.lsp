@@ -54,7 +54,7 @@
   (sssetfirst nil add)
   (setq ass (sum ass_filter))
   
-  (if (/= ass nil) (draw hh ass) (draw hh 0))
+  (draw hh ass)
 )
 
 ; By Fredy Godinho - Brazil
@@ -63,20 +63,19 @@
 ; thanks!
 (defun sum (filter_list / i text value)
   (setq objs (ssget filter_list))
+
+  (if (= objs nil) (setq objs (ssadd)))
   
-  (if (/= objs nil)
-    (progn
-      (setq i (sslength objs))
-      (setq position 0 value 0.0)
-      (repeat i
-        (setq text (cdr (assoc 1 (entget (ssname objs position)))))
-        (setq value (+ value (atof text)))
-        (setq position (+ position 1))
-      )
-      value
+  (progn
+    (setq i (sslength objs))
+    (setq position 0 value 0.0)
+    (repeat i
+      (setq text (cdr (assoc 1 (entget (ssname objs position)))))
+      (setq value (+ value (atof text)))
+      (setq position (+ position 1))
     )
+    value
   )
-  (princ)
 )
 
 ; Gabriel S. Nascimento, 15.08.23, Brazil
