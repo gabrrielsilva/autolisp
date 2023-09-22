@@ -94,45 +94,45 @@
   ; | FAC |
   ; -------
 
-  (setq insert_point (getpoint "\nClique no local desejado: "))
+  (setq insert_pt (getpoint "\nClique no local desejado: "))
   
   ; set styles and current layer
   (command "._style" "ROMANS" "ROMANS" 0.000008 "1" "0" "N" "N" "N")
-  (command "layer" "new" "DEMANDA ASS" "color" "1" "DEMANDA ASS" "") 
+  (command "layer" "new" "DEMANDA ASS" "color" "3" "DEMANDA ASS" "") 
   (command "layer" "set" "DEMANDA ASS" "") 
   
-  (setq rectang_width 0.00004)
-  (setq rectang_height 0.000066)
+  (setq rec_w 0.00004)
+  (setq rec_h 0.000066)
   
-  (command "._rectang" insert_point "d" rectang_width rectang_height insert_point)
+  (command "._rectang" insert_pt "d" rec_w rec_h insert_pt)
   
   ; line breaks
-  (setq first_line_break_start (polar insert_point (/ pi 2) (/ rectang_height 4)))
-  (setq first_line_break_end (polar first_line_break_start 0 rectang_width))
-  (setq second_line_break_start (polar first_line_break_start (/ pi 2) (/ rectang_height 4)))
-  (setq second_line_break_end (polar second_line_break_start 0 rectang_width))
-  (setq third_line_break_start (polar second_line_break_start (/ pi 2) (/ rectang_height 4)))
-  (setq third_line_break_end (polar third_line_break_start 0 rectang_width))
+  (setq lb1_start (polar insert_pt (/ pi 2) (/ rec_h 4)))
+  (setq lb1_end (polar lb1_start 0 rec_w))
+  (setq lb2_start (polar lb1_start (/ pi 2) (/ rec_h 4)))
+  (setq lb2_end (polar lb2_start 0 rec_w))
+  (setq lb3_start (polar lb2_start (/ pi 2) (/ rec_h 4)))
+  (setq lb3_end (polar lb3_start 0 rec_w))
   
-  (command "._line" first_line_break_start first_line_break_end "")
-  (command "._line" second_line_break_start second_line_break_end "")
-  (command "._line" third_line_break_start third_line_break_end "")
+  (command "._line" lb1_start lb1_end "")
+  (command "._line" lb2_start lb2_end "")
+  (command "._line" lb3_start lb3_end "")
     
-  (setq center_point (polar insert_point 0 (/ rectang_width 2)))
+  (setq center_pt (polar insert_pt 0 (/ rec_w 2)))
   
-  (setq ass_point (polar center_point (/ pi 2) (* (/ rectang_height 8) 7)))
-  (setq hh_point (polar center_point (/ pi 2) (* (/ rectang_height 8) 5)))
-  (setq percentage_point (polar center_point (/ pi 2) (* (/ rectang_height 8) 3)))
-  (setq facil_point (polar center_point (/ pi 2) (* (/ rectang_height 8) 1)))
+  (setq ass_pt (polar center_pt (/ pi 2) (* (/ rec_h 8) 7)))
+  (setq hh_pt (polar center_pt (/ pi 2) (* (/ rec_h 8) 5)))
+  (setq perc_pt (polar center_pt (/ pi 2) (* (/ rec_h 8) 3)))
+  (setq facil_pt (polar center_pt (/ pi 2) (* (/ rec_h 8) 1)))
   
   ; sum of the "facil" plus "ass" should be 16
   (setq facil (- 16 ass))
-  (setq integer_percentage (rtos (* (/ facil hh) 100) 2 0))
+  (setq int_perc (rtos (* (/ facil hh) 100) 2 0))
   
-  (command "._text" "j" "mc" ass_point 0 ass "")
-  (command "._text" "j" "mc" hh_point 0 hh "")
-  (command "._text" "j" "mc" percentage_point 0 (strcat integer_percentage "%") "")
-  (command "._text" "j" "mc" facil_point 0 facil "")
+  (command "._text" "j" "mc" ass_pt 0 ass "")
+  (command "._text" "j" "mc" hh_pt 0 hh "")
+  (command "._text" "j" "mc" perc_pt 0 (strcat int_perc "%") "")
+  (command "._text" "j" "mc" facil_pt 0 facil "")
   
   (restore_osnap)
 )
