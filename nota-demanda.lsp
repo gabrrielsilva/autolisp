@@ -80,67 +80,23 @@
 
 ; Gabriel S. Nascimento, 15.08.23, Brazil
 (defun draw (hh ass)
-  (save_osnap)
-  (setvar "osmode" 0)
-  
-  ; width = 0.00004
-  ; _______
-  ; | ASS |
-  ; -------
-  ; | HH  |
-  ; ------- height = 0.000066
-  ; |  %  |
-  ; -------
-  ; | FAC |
-  ; -------
-
   (setq insert_pt (getpoint "\nClique no local desejado: "))
-  
-  ; set styles and current layer
-  (command "._style" "ROMANS" "ROMANS" 0.000008 "1" "0" "N" "N" "N")
-  (command "layer" "new" "DEMANDA ASS" "color" "3" "DEMANDA ASS" "") 
-  (command "layer" "set" "DEMANDA ASS" "") 
-  
-  (setq rec_w 0.00004)
-  (setq rec_h 0.000066)
-  
-  (command "._rectang" insert_pt "d" rec_w rec_h insert_pt)
-  
-  ; line breaks
-  (setq lb1_start (polar insert_pt (/ pi 2) (/ rec_h 4)))
-  (setq lb1_end (polar lb1_start 0 rec_w))
-  (setq lb2_start (polar lb1_start (/ pi 2) (/ rec_h 4)))
-  (setq lb2_end (polar lb2_start 0 rec_w))
-  (setq lb3_start (polar lb2_start (/ pi 2) (/ rec_h 4)))
-  (setq lb3_end (polar lb3_start 0 rec_w))
-  
-  (command "._line" lb1_start lb1_end "")
-  (command "._line" lb2_start lb2_end "")
-  (command "._line" lb3_start lb3_end "")
-    
-  (setq center_pt (polar insert_pt 0 (/ rec_w 2)))
-  
-  (setq ass_pt (polar center_pt (/ pi 2) (* (/ rec_h 8) 7)))
-  (setq hh_pt (polar center_pt (/ pi 2) (* (/ rec_h 8) 5)))
-  (setq perc_pt (polar center_pt (/ pi 2) (* (/ rec_h 8) 3)))
-  (setq facil_pt (polar center_pt (/ pi 2) (* (/ rec_h 8) 1)))
   
   ; sum of the "facil" plus "ass" should be 16
   (setq facil (- 16 ass))
   (setq int_perc (rtos (* (/ facil hh) 100) 2 0))
   
-  (command "._text" "j" "mc" ass_pt 0 ass "")
-  (command "._text" "j" "mc" hh_pt 0 hh "")
-  (command "._text" "j" "mc" perc_pt 0 (strcat int_perc "%") "")
-  (command "._text" "j" "mc" facil_pt 0 facil "")
-  
-  (restore_osnap)
+  (disable_attdia)
+  (command "_.INSERT" "DEMANDA_ASS" insert_pt 0.5627 0.5627 0.0 ass hh int_perc facil)
+  (enable_attdia)
 )
 
-(defun save_osnap ()
-  (setq osnap_mode (getvar "osmode"))
+(defun disable_attdia ()
+  ; Set ATTDIA to 0 to disable the attribute dialog box
+  (setvar "ATTDIA" 0)
 )
 
-(defun restore_osnap ()
-  (setvar "osmode" osnap_mode)
+(defun enable_attdia ()
+  ; Set ATTDIA to 1 to enable the attribute dialog box
+  (setvar "ATTDIA" 1)
 )
