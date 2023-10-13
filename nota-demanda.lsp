@@ -5,6 +5,9 @@
 ; Select Within Curve
 ; Alan J. Thompson, 03.31.11
 (defun swc (/ _pac add ss i temp i2)
+  ; select the last polyline drawn and close it
+  (command "pedit" "L" "C" "X")
+  
   ; loads Visual LISP extensions to AutoLISP
   (vl-load-com)
 
@@ -18,6 +21,8 @@
     )
   )
 
+  ; (command "PEDIT" "M" "C")
+  
   ; initializes an empty selection set and a selection set query based on specific criteria: they are either circles or ellipses or closed polylines
   (if (setq add (ssadd) ss (ssget '((-4 . "<OR")
                                     (0 . "CIRCLE,ELLIPSE")
@@ -79,15 +84,16 @@
 )
 
 ; Gabriel S. Nascimento, 15.08.23, Brazil
-(defun draw (hh ass)
+(defun draw (hh ass)  
   (setq insert_pt (getpoint "\nClique no local desejado: "))
   
   ; sum of the "facil" plus "ass" should be 16
   (setq facil (- 16 ass))
   (setq int_perc (rtos (* (/ facil hh) 100) 2 0))
+  (setq perc_str (strcat int_perc "%"))
   
   (disable_attdia)
-  (command "_.INSERT" "DEMANDA_ASS" insert_pt 0.5627 0.5627 0.0 ass hh int_perc facil)
+  (command "_.INSERT" "DEMANDA_ASS" insert_pt 0.5627 0.5627 0.0 ass hh perc_str facil)
   (enable_attdia)
 )
 
